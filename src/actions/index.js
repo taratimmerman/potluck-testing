@@ -1,0 +1,58 @@
+import axios from 'axios';
+export const LOGIN_START = 'LOGIN_START';
+export const REGISTER = 'REGISTER';
+export const LOGOUT = 'LOGOUT';
+export const GETPOTLUCKS = 'GETPOTLUCKS';
+export const SUCCESS = 'SUCCESS';
+export const FAILURE = 'FAILURE';
+export const CREATE_POTLUCK = 'CREATE_POTLUCK';
+
+export const login = creds => dispatch => {
+  dispatch({ type: LOGIN_START });
+  return axios
+    .post('https://radiant-gorge-83314.herokuapp.com/api/auth/login', creds)
+    .then(res => {
+      localStorage.setItem('token', res.data.authToken);
+      window.alert(res.data.message);
+    })
+    .catch(err => console.log('Login' + err));
+};
+
+export const register = regObj => dispatch => {
+  dispatch({ type: REGISTER });
+  return axios
+    .post('https://radiant-gorge-83314.herokuapp.com/api/auth/register', regObj)
+    .then(res => console.log(res))
+    .catch(err => console.log('Register' + err));
+};
+
+export const getPotlucks = () => dispatch => {
+  dispatch({ type: GETPOTLUCKS });
+
+  axios
+    .get('https://radiant-gorge-83314.herokuapp.com/api/potlucks', {
+      headers: { authorization: localStorage.getItem('token') }
+    })
+    .then(res => {
+      console.log(res);
+      dispatch({ type: SUCCESS, payload: res.data });
+    })
+    .catch(err => {
+      console.log('Get potlucks' + err);
+      dispatch({ type: FAILURE, payload: err });
+    });
+};
+
+export const addPotluck = newPotluck => dispatch => {
+  console.log(newPotluck);
+  dispatch({ type: CREATE_POTLUCK });
+  axios
+    .post('https://radiant-gorge-83314.herokuapp.com/api/potlucks', newPotluck, {
+      headers: { authorization: localStorage.getItem('token') }
+    })
+    .then(res => {
+      console.log(res);
+      dispatch({ type: SUCCESS, payload: res.data });
+    })
+    .catch(err => console.log(err));
+};
