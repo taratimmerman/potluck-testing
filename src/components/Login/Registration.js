@@ -2,6 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { register } from '../../actions';
 import { withRouter } from 'react-router';
+import styled from "styled-components";
 
 const emailRegex = RegExp(
   /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/
@@ -96,10 +97,10 @@ class Registration extends React.Component {
   render() {
     const { formErrors } = this.state;
     return (
-      <div className='base-container' ref={this.props.containerRef}>
-        <h1 className='header'>Create Account</h1>
+      <HomepageDiv className='base-container' ref={this.props.containerRef}>
         <div className='content'>
-          <form className='form' onSubmit={this.handleSubmit} noValidate>
+          <UserForm className='form' onSubmit={this.handleSubmit} noValidate>
+          <UserFormTitle className='header'>Create A Guest/Organizer Profile</UserFormTitle>
             <div className='firstName form-group'>
               <label htmlFor='firstName'>First Name</label>
               <input
@@ -161,9 +162,9 @@ class Registration extends React.Component {
               )}
             </div>
             <button className='btn footer'>Get started!</button>
-          </form>
+          </UserForm>
         </div>
-      </div>
+      </HomepageDiv>
     );
   }
 }
@@ -174,3 +175,50 @@ export default connect(
     register
   }
 )(SignUpWithRouter);
+
+const UserForm=styled.form`
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    bottom: 5rem;
+    color: #ffcc29;
+
+    select, input {
+        margin: 1rem;
+        border: 1rem ridge #ffcc29;
+        border-radius: 1rem;
+    };
+    label {
+        margin: 1rem;
+        font-weight: bold;
+    }
+    p {
+        font-weight: bold;
+    }
+`
+const UserFormTitle=styled.h4`
+top: 3rem;
+`
+
+const HomepageDiv = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-size: 1.8rem;
+  h1 {
+    color: #ffcc29;
+  }
+  h4 {
+    font-size: 1.5rem;
+    bottom: 4rem;
+    color: #ffcc29;
+    border-bottom: 0.75rem ridge #ffcc29;
+    border-radius: 1rem;
+    padding: 0.5rem;
+  }
+  button {
+    border: 1rem ridge #ffcc29;
+    color: #00af91;
+    font-weight: bold;
+  }
+`;
